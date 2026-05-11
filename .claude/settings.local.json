@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem \"D:\\\\ResearchDepartment\\\\trial\\\\3-dev\\\\src\\\\web-react\\\\\" -Force | ForEach-Object { $_.Name })",
+      "PowerShell(Remove-Item *)",
+      "PowerShell(Get-ChildItem *)",
+      "PowerShell(Get-ChildItem \"D:\\\\ResearchDepartment\\\\trial\\\\3-dev\\\\src\\\\web-react\\\\\" -Force | ForEach-Object { $_.FullName })",
+      "PowerShell(Get-ChildItem \"D:\\\\ResearchDepartment\\\\trial\\\\3-dev\\\\src\\\\web-react\\\\CUsersADMINI~1AppDataLocalTempvite-scaffold\" -Force | ForEach-Object { $_.Name })",
+      "PowerShell(Copy-Item *)",
+      "PowerShell(npm ls *)",
+      "Bash(npx tsc *)"
+    ]
+  }
+}

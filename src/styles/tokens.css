@@ -1,0 +1,202 @@
+/* ============================================================
+   整合管理平台 — Design Tokens
+   若綠色 (Jade Green / Wakamidori) brand palette
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600&display=swap');
+
+:root {
+
+  /* ----------------------------------------------------------
+     BRAND — 若綠色 (Jade / Wakamidori)
+     ---------------------------------------------------------- */
+  --color-brand-50:  #E1F5EE;   /* active nav bg, pill bg */
+  --color-brand-100: #C0EBDB;
+  --color-brand-200: #9FE1CB;   /* avatar bg */
+  --color-brand-300: #5FCBA8;
+  --color-brand-400: #2DB88C;
+  --color-brand-500: #1D9E75;   /* PRIMARY — buttons, active items, dots */
+  --color-brand-600: #0F6E56;   /* active text, hover */
+  --color-brand-700: #085041;   /* avatar text, dark label */
+  --color-brand-800: #053629;
+  --color-brand-900: #021F18;
+
+  /* ----------------------------------------------------------
+     NEUTRALS — three-tier background system
+     ---------------------------------------------------------- */
+  --color-background-primary:   #FFFFFF;      /* cards, sidebar, topbar */
+  --color-background-secondary: #F5F5F4;      /* table headers, hover fills, code bg */
+  --color-background-tertiary:  #EEEEEC;      /* page shell / outer bg */
+
+  --color-border-tertiary:  rgba(0, 0, 0, 0.09);   /* hairline 0.5px — everywhere */
+  --color-border-secondary: rgba(0, 0, 0, 0.18);   /* hover state border */
+
+  /* ----------------------------------------------------------
+     TEXT — three tiers
+     ---------------------------------------------------------- */
+  --color-text-primary:   #08060D;   /* headings, key data */
+  --color-text-secondary: #6B6375;   /* body, descriptions */
+  --color-text-tertiary:  #A49DAE;   /* labels, timestamps, placeholders */
+
+  /* ----------------------------------------------------------
+     SEMANTIC STATUS
+     ---------------------------------------------------------- */
+  /* Success / green */
+  --color-success-text:    #085041;
+  --color-success-bg:      #E1F5EE;
+  --color-success-accent:  #1D9E75;
+  --color-success-dark:    #0F6E56;
+
+  /* Warning / amber */
+  --color-warning-text:    #633806;
+  --color-warning-bg:      #FAEEDA;
+  --color-warning-accent:  #BA7517;
+
+  /* Error / overdue */
+  --color-error-text:      #791F1F;
+  --color-error-bg:        #FCEBEB;
+  --color-error-accent:    #A32D2D;
+
+  /* Info / blue */
+  --color-info-text:       #185FA5;
+  --color-info-bg:         #E6F1FB;
+  --color-info-accent:     #378ADD;
+
+  /* Neutral pill */
+  --color-neutral-pill-text: var(--color-text-secondary);
+  --color-neutral-pill-bg:   var(--color-background-secondary);
+
+  /* ----------------------------------------------------------
+     TYPOGRAPHY
+     ---------------------------------------------------------- */
+  --font-sans: 'Noto Sans TC', system-ui, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, Consolas, 'Courier New', monospace;
+
+  /* Size scale */
+  --font-size-10: 10px;   /* nav section labels, lock badges */
+  --font-size-11: 11px;   /* stat labels, table headers, timestamps */
+  --font-size-12: 12px;   /* activity text, body small */
+  --font-size-13: 13px;   /* nav items, module names, primary body */
+  --font-size-14: 14px;   /* topbar page title, logo text */
+  --font-size-15: 15px;   /* upsell title */
+  --font-size-22: 22px;   /* stat values (data display) */
+
+  /* Weights */
+  --font-weight-regular: 400;
+  --font-weight-medium:  500;
+  --font-weight-semibold: 600;
+
+  /* Line heights */
+  --line-height-tight:  1.2;
+  --line-height-normal: 1.5;
+
+  /* Letter spacing */
+  --letter-spacing-label: 0.06em;   /* section labels: uppercase, spaced */
+
+  /* ----------------------------------------------------------
+     SPACING
+     ---------------------------------------------------------- */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  10px;
+  --space-4:  12px;
+  --space-5:  14px;
+  --space-6:  16px;
+  --space-7:  20px;
+  --space-8:  24px;
+  --space-9:  28px;
+  --space-10: 32px;
+
+  /* ----------------------------------------------------------
+     BORDER RADIUS
+     ---------------------------------------------------------- */
+  --border-radius-sm:   4px;    /* code snippets, pill badges */
+  --border-radius-md:   7px;    /* nav items, buttons, inputs */
+  --border-radius-lg:   10px;   /* cards, panels, tables */
+  --border-radius-xl:   12px;   /* module icon containers (9px in reference) */
+  --border-radius-full: 9999px; /* status pills (capsule) */
+  --border-radius-circle: 50%;  /* avatars */
+
+  /* ----------------------------------------------------------
+     LAYOUT
+     ---------------------------------------------------------- */
+  --sidebar-width:    220px;
+  --topbar-height:    52px;
+  --content-padding:  20px;
+  --card-padding:     16px;
+  --border-width:     0.5px;
+
+  /* ----------------------------------------------------------
+     TRANSITIONS
+     ---------------------------------------------------------- */
+  --transition-fast: 0.12s linear;
+
+  /* ----------------------------------------------------------
+     ELEVATION (no box-shadow; depth via bg tiers + hairlines)
+     ---------------------------------------------------------- */
+  /* Cards have no shadow; use background tiers for depth */
+  --shadow-none: none;
+}
+
+/* ----------------------------------------------------------
+   SEMANTIC / COMPONENT ALIASES
+   ---------------------------------------------------------- */
+
+/* Headings */
+.h1 { font-family: var(--font-sans); font-size: var(--font-size-14); font-weight: var(--font-weight-medium); color: var(--color-text-primary); }
+.h2 { font-family: var(--font-sans); font-size: var(--font-size-13); font-weight: var(--font-weight-medium); color: var(--color-text-primary); }
+
+/* Body */
+.body-sm  { font-family: var(--font-sans); font-size: var(--font-size-12); color: var(--color-text-secondary); line-height: var(--line-height-normal); }
+.body-xs  { font-family: var(--font-sans); font-size: var(--font-size-11); color: var(--color-text-secondary); }
+
+/* Labels */
+.label    { font-family: var(--font-sans); font-size: var(--font-size-10); font-weight: var(--font-weight-medium); color: var(--color-text-tertiary); letter-spacing: var(--letter-spacing-label); text-transform: uppercase; }
+
+/* Mono */
+.code     { font-family: var(--font-mono); font-size: var(--font-size-12); background: var(--color-background-secondary); padding: 2px 6px; border-radius: var(--border-radius-sm); color: var(--color-text-primary); }
+
+/* Data value (stat cards) */
+.stat-value { font-family: var(--font-sans); font-size: var(--font-size-22); font-weight: var(--font-weight-medium); color: var(--color-text-primary); }
+
+/* Status pills */
+.pill         { display: inline-block; font-size: var(--font-size-10); font-weight: var(--font-weight-medium); padding: 2px 8px; border-radius: var(--border-radius-full); }
+.pill-success { background: var(--color-success-bg); color: var(--color-success-text); }
+.pill-warning { background: var(--color-warning-bg); color: var(--color-warning-text); }
+.pill-error   { background: var(--color-error-bg);   color: var(--color-error-text); }
+.pill-info    { background: var(--color-info-bg);    color: var(--color-info-text); }
+.pill-neutral { background: var(--color-neutral-pill-bg); color: var(--color-neutral-pill-text); }
+
+/* Primary button */
+.btn-primary {
+  display: inline-flex; align-items: center;
+  height: 32px; padding: 0 14px;
+  font-size: var(--font-size-12); font-weight: var(--font-weight-medium);
+  font-family: var(--font-sans);
+  background: var(--color-brand-500); color: #fff;
+  border: none; border-radius: var(--border-radius-md);
+  cursor: pointer; transition: background var(--transition-fast);
+}
+.btn-primary:hover { background: var(--color-brand-600); }
+
+/* Secondary button */
+.btn-secondary {
+  display: inline-flex; align-items: center;
+  height: 32px; padding: 0 14px;
+  font-size: var(--font-size-12); font-weight: var(--font-weight-medium);
+  font-family: var(--font-sans);
+  background: var(--color-background-primary); color: var(--color-text-primary);
+  border: var(--border-width) solid var(--color-border-secondary);
+  border-radius: var(--border-radius-md);
+  cursor: pointer; transition: background var(--transition-fast);
+}
+.btn-secondary:hover { background: var(--color-background-secondary); }
+
+/* Card */
+.card {
+  background: var(--color-background-primary);
+  border: var(--border-width) solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: var(--card-padding);
+}
+.card:hover { border-color: var(--color-border-secondary); }

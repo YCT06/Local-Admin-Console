@@ -1,0 +1,34 @@
+{
+  "app": { "name": "Local Admin Console", "sub": "本地管理控制台" },
+  "nav": {
+    "dashboard": "Dashboard", "users": "User Management", "roles": "Roles & Permissions",
+    "password": "Change Password", "status": "System Status", "sessions": "Active Sessions",
+    "network": "Network Settings", "service": "Service Packs", "audit": "Audit Trail",
+    "console": "Console", "identity": "Identity", "ops": "Operations"
+  },
+  "login": {
+    "eyebrow": "Sign in",
+    "title": "Enter your admin credentials",
+    "headline": "Monitor every signal in your\nlocal infrastructure.",
+    "desc": "Manage users and roles, monitor host resources, adjust network settings, and deploy the latest service packs — all running on your internal network, no external cloud.",
+    "submit": "Sign in", "submitting": "Verifying…",
+    "username": "Username", "password": "Password", "authType": "Auth method",
+    "local": "Local account", "ldap": "LDAP directory",
+    "localHint": "Sign in with a locally stored admin account.",
+    "ldapHint": "Authenticate via enterprise LDAP / Active Directory.",
+    "help": "Need help?", "contact": "Contact system administrator",
+    "error": "Please enter username and password",
+    "stat1Label": "Online nodes", "stat1Hint": "Local · ofc-prod-01",
+    "stat2Label": "Deployed modules", "stat2Hint": "Incl. OCR · pkg recognition",
+    "stat3Label": "Uptime", "stat3Hint": "Last reboot 04/09",
+    "copyright": "© Local Admin Console · Internal use",
+    "serviceOk": "Service status normal"
+  },
+  "common": {
+    "save": "Save", "cancel": "Cancel", "confirm": "Confirm", "delete": "Delete",
+    "edit": "Edit", "add": "Add", "search": "Search", "export": "Export",
+    "refresh": "Refresh", "close": "Close", "logout": "Sign out"
+  },
+  "theme": { "light": "Light", "dark": "Dark" },
+  "density": { "compact": "Compact", "regular": "Regular", "comfy": "Comfortable" }
+}
