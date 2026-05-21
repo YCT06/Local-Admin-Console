@@ -1,28 +1,78 @@
-export type ContainerStatus = 'running' | 'restarting' | 'stopped';
+// ── 後端實際回傳的容器結構 ─────────────────────────────
+export interface ContainerResources {
+  cpuPercent: number;
+  memoryUsageMB: number;
+  memoryLimitMB: number;
+  memoryPercent: number;
+}
 
-export interface Container {
+export interface DockerContainer {
   name: string;
-  image: string;
-  status: ContainerStatus;
+  status: string;
   uptime: string;
-  cpu: number;
-  mem: number;
-  port: string;
+  health: string | null;
+  resources: ContainerResources | null;
 }
 
-export interface NetworkAdapter {
-  name: string;
-  display: string;
-  mac: string;
-  primary: boolean;
-  connected: boolean;
-  mode: 'static' | 'dhcp';
-  ip: string;
-  netmask: string;
-  gateway: string;
-  dns: string[];
+export interface SystemMetricHistoryPoint {
+  timestamp: string;
+  cpuUsagePercent: number;
+  memoryUsagePercent: number;
 }
 
+export interface SystemMetrics {
+  timestamp: string;
+  cpu: { usagePercent: number; coreCount: number };
+  memory: { totalGB: number; usedGB: number; usagePercent: number };
+  disks: {
+    mount: string;
+    totalGB: number;
+    usedGB: number;
+    usagePercent: number;
+  }[];
+  gpu: {
+    model: string;
+    memoryTotalMB: number;
+    memoryUsedMB: number;
+    usagePercent: number;
+  } | null;
+  uptime: string;
+  network: { bytesIn: number; bytesOut: number; status: string };
+  docker: { containers: DockerContainer[] };
+  history?: { points: SystemMetricHistoryPoint[] };
+}
+
+// ── 後端實際回傳的網路結構 ─────────────────────────────
+export type NetworkConnectionMode = "dhcp" | "static";
+
+export interface NetworkAdapterConfig {
+  interfaceName: string;
+  displayName: string;
+  macAddress: string;
+  isPrimary: boolean;
+  isConnected: boolean;
+  connectionMode: NetworkConnectionMode;
+  ipAddress: string | null;
+  subnetMask: string | null;
+  gateway: string | null;
+  dnsServers: string[];
+}
+
+export interface NetworkConfiguration {
+  lastUpdatedUtc: string;
+  adapters: NetworkAdapterConfig[];
+}
+
+export interface NetworkConfigurationUpdateRequest {
+  interfaceName: string;
+  connectionMode: NetworkConnectionMode;
+  ipAddress: string | null;
+  subnetMask: string | null;
+  gateway: string | null;
+  dnsServers: string[];
+}
+
+// ── Mock 頁面保留使用（後端尚未實作）─────────────────
 export interface TrendData {
   cpu: number[];
   memory: number[];

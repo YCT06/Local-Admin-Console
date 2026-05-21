@@ -1,21 +1,17 @@
-import type { Container, NetworkAdapter, TrendData, ActiveSession } from '../types/system';
-import type { AuditEvent } from '../types/audit';
-import { MOCK_CONTAINERS, MOCK_NETWORK_ADAPTERS, MOCK_TRENDS, MOCK_SESSIONS, MOCK_AUDIT_EVENTS } from './mock';
+import client from "./client";
+import type { SystemMetrics } from "../types/system";
+import type { ActiveSession } from "../types/system";
+import type { AuditEvent } from "../types/audit";
+import { MOCK_SESSIONS, MOCK_AUDIT_EVENTS } from "./mock";
 
-export async function getContainers(): Promise<Container[]> {
-  // TODO: return client.get('/system/containers').then(r => r.data)
-  return Promise.resolve([...MOCK_CONTAINERS]);
+// \u2500\u2500 \u5f8c\u7aef\u5df2\u5be6\u4f5c \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+
+export async function getMetrics(): Promise<SystemMetrics> {
+  const { data } = await client.get<SystemMetrics>("/system/metrics");
+  return data;
 }
 
-export async function getNetworkAdapters(): Promise<NetworkAdapter[]> {
-  // TODO: return client.get('/system/network').then(r => r.data)
-  return Promise.resolve([...MOCK_NETWORK_ADAPTERS]);
-}
-
-export async function getTrends(): Promise<TrendData> {
-  // TODO: return client.get('/system/trends').then(r => r.data)
-  return Promise.resolve({ ...MOCK_TRENDS });
-}
+// \u2500\u2500 \u5f8c\u7aef\u5c1a\u672a\u5be6\u4f5c\uff0c\u4fdd\u7559 mock \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
 
 export async function getSessions(): Promise<ActiveSession[]> {
   // TODO: return client.get('/sessions').then(r => r.data)

@@ -1,20 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import HighchartsReactModule from "highcharts-react-official";
-import Highcharts from "highcharts";
-
-// CJS/ESM interop: Vite may resolve the module namespace instead of default export
-const HighchartsReact: typeof HighchartsReactModule =
-  (
-    HighchartsReactModule as unknown as {
-      default: typeof HighchartsReactModule;
-    }
-  ).default ?? HighchartsReactModule;
+import ReactECharts from "echarts-for-react";
+import type { EChartsOption } from "echarts";
 import Icon from "../components/Icon";
 import StatusPill from "../components/StatusPill";
-import { getContainers, getTrends } from "../api/systemApi";
-import type { Container } from "../types/system";
+import { useSystemMetrics } from "../hooks/useSystemMetrics";
+import type { DockerContainer } from "../types/system";
 
 function Gauge({
   value,
@@ -130,55 +121,51 @@ function DiskBar({
 export default function StatusPage() {
   const navigate = useNavigate();
   const [autoRefresh, setAutoRefresh] = useState(true);
-  const { data: containers = [] } = useQuery({
-    queryKey: ["containers"],
-    queryFn: getContainers,
-    refetchInterval: autoRefresh ? 5000 : false,
-  });
-  const { data: trends } = useQuery({
-    queryKey: ["trends"],
-    queryFn: getTrends,
-    refetchInterval: autoRefresh ? 5000 : false,
-  });
+  const { data: metrics } = useSystemMetrics(autoRefresh);
 
-  const chartOptions: Highcharts.Options = {
-    chart: {
-      type: "line",
-      height: 180,
-      backgroundColor: "transparent",
-      margin: [12, 10, 28, 32],
-      animation: false,
-    },
-    title: { text: undefined },
-    legend: { enabled: false },
-    xAxis: { visible: false },
+  const containers: DockerContainer[] = metrics?.docker.containers ?? [];
+
+  const chartOptions: EChartsOption = {
+    animation: false,
+    grid: { top: 12, right: 10, bottom: 28, left: 32 },
+    xAxis: { type: "category", show: false },
     yAxis: {
+      type: "value",
       min: 0,
       max: 100,
-      gridLineColor: "#F0EFEC",
-      labels: {
-        style: { fontSize: "10px", color: "#A49DAE" },
-        formatter() {
-          return this.value + "";
-        },
-      },
-      title: { text: undefined },
+      splitLine: { lineStyle: { color: "#F0EFEC" } },
+      axisLabel: { fontSize: 10, color: "#A49DAE" },
     },
-    tooltip: { shared: true, valueDecimals: 1, valueSuffix: "%" },
-    plotOptions: {
-      line: { marker: { enabled: false }, lineWidth: 1.5, animation: false },
+    tooltip: {
+      trigger: "axis",
+      valueFormatter: (v) => (v as number).toFixed(1) + "%",
     },
     series: [
-      { type: "line", name: "CPU", color: "#378ADD", data: trends?.cpu ?? [] },
+      {
+        type: "line",
+        name: "CPU",
+        data: metrics?.cpuTrend ?? [],
+        lineStyle: { color: "#378ADD", width: 1.5 },
+        itemStyle: { color: "#378ADD" },
+        symbol: "none",
+      },
       {
         type: "line",
         name: "記憶體",
-        color: "#BA7517",
-        data: trends?.memory ?? [],
+        data: metrics?.memoryTrend ?? [],
+        lineStyle: { color: "#BA7517", width: 1.5 },
+        itemStyle: { color: "#BA7517" },
+        symbol: "none",
       },
-      { type: "line", name: "GPU", color: "#1D9E75", data: trends?.gpu ?? [] },
+      {
+        type: "line",
+        name: "GPU",
+        data: metrics?.gpuTrend ?? [],
+        lineStyle: { color: "#1D9E75", width: 1.5 },
+        itemStyle: { color: "#1D9E75" },
+        symbol: "none",
+      },
     ],
-    credits: { enabled: false },
   };
 
   return (
@@ -237,7 +224,11 @@ export default function StatusPage() {
             padding: 16,
           }}
         >
-          <Gauge value={32} label="CPU 使用率" sub="8 核心 · Xeon E-2386G" />
+          <Gauge
+            value={metrics?.cpu.usagePercent ?? 0}
+            label="CPU 使用率"
+            sub={metrics ? `${metrics.cpu.coreCount} 核心` : "載入中…"}
+          />
         </div>
         <div
           className="card"
@@ -248,7 +239,15 @@ export default function StatusPage() {
             padding: 16,
           }}
         >
-          <Gauge value={64} label="記憶體" sub="20.4 / 32 GB" />
+          <Gauge
+            value={metrics?.memory.usagePercent ?? 0}
+            label="記憶體"
+            sub={
+              metrics
+                ? `${metrics.memory.usedGB.toFixed(1)} / ${metrics.memory.totalGB} GB`
+                : "載入中…"
+            }
+          />
         </div>
         <div
           className="card"
@@ -259,7 +258,11 @@ export default function StatusPage() {
             padding: 16,
           }}
         >
-          <Gauge value={78} label="GPU" sub="RTX A2000 · 6 GB" />
+          <Gauge
+            value={metrics?.gpu?.usagePercent ?? 0}
+            label="GPU"
+            sub={metrics?.gpu ? `${metrics.gpu.model}` : "N/A"}
+          />
         </div>
         <div
           className="card"
@@ -374,7 +377,7 @@ export default function StatusPage() {
             ))}
           </div>
         </div>
-        <HighchartsReact highcharts={Highcharts} options={chartOptions} />
+        <ReactECharts option={chartOptions} style={{ height: 180 }} />
       </div>
 
       <div
@@ -479,7 +482,7 @@ export default function StatusPage() {
         className="grid"
         style={{ gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))" }}
       >
-        {containers.map((c: Container) => {
+        {containers.map((c: DockerContainer) => {
           const variant =
             c.status === "running"
               ? "success"
@@ -524,7 +527,7 @@ export default function StatusPage() {
                       whiteSpace: "nowrap",
                     }}
                   >
-                    {c.image}
+                    {c.health ?? "--"}
                   </div>
                 </div>
                 <StatusPill variant={variant} dot>
@@ -540,8 +543,11 @@ export default function StatusPage() {
                 }}
               >
                 {[
-                  ["CPU", c.cpu.toFixed(1) + "%"],
-                  ["記憶體", c.mem + " MB"],
+                  ["CPU", (c.resources?.cpuPercent.toFixed(1) ?? "0") + "%"],
+                  [
+                    "記憶體",
+                    (c.resources?.memoryUsageMB ?? 0).toFixed(0) + " MB",
+                  ],
                   ["運行", c.uptime],
                 ].map(([k, v]) => (
                   <div key={k}>
@@ -582,7 +588,7 @@ export default function StatusPage() {
                   className="mono"
                   style={{ fontSize: 11, color: "var(--color-text-secondary)" }}
                 >
-                  {c.port}
+                  {c.health ?? "--"}
                 </span>
                 <div style={{ display: "flex", gap: 4 }}>
                   <button className="btn btn-ghost btn-sm" title="重啟">

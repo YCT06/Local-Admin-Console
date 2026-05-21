@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
+import { useColorMode } from '@chakra-ui/react';
 import { useAuthStore } from './stores/authStore';
 import { useUiStore } from './stores/uiStore';
 import MainLayout from './layouts/MainLayout';
@@ -41,11 +42,13 @@ const router = createBrowserRouter([
 
 export default function App() {
   const { theme, density } = useUiStore();
+  const { setColorMode } = useColorMode();
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     document.body.setAttribute('data-density', density);
-  }, [theme, density]);
+    setColorMode(theme);
+  }, [theme, density, setColorMode]);
 
   return <RouterProvider router={router} />;
 }

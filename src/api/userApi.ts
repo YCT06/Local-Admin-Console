@@ -1,23 +1,65 @@
-import type { User } from '../types/user';
-import { MOCK_USERS } from './mock';
+import client from "./client";
 
-export async function getUsers(): Promise<User[]> {
-  // TODO: return client.get('/users').then(r => r.data)
-  return Promise.resolve([...MOCK_USERS]);
+export interface UserListItem {
+  id: string;
+  username: string;
+  displayName: string;
+  email: string | null;
+  authType: string;
+  isActive: boolean;
+  preferredLocale: string | null;
+  roles: string[];
 }
 
-export async function createUser(data: Partial<User>): Promise<User> {
-  // TODO: return client.post('/users', data).then(r => r.data)
-  return Promise.resolve({ id: Date.now(), isActive: true, roles: [], locale: 'zh-TW', lastLogin: '—', authType: 'local', email: '', displayName: '', username: '', ...data } as User);
+export interface RoleOption {
+  name: string;
+  displayName: string;
 }
 
-export async function updateUser(id: number, data: Partial<User>): Promise<User> {
-  // TODO: return client.put(`/users/${id}`, data).then(r => r.data)
-  const user = MOCK_USERS.find(u => u.id === id)!;
-  return Promise.resolve({ ...user, ...data });
+export interface CreateUserRequest {
+  username: string;
+  password: string;
+  displayName: string;
+  email: string | null;
+  authType: string;
+  isActive: boolean;
+  preferredLocale: string | null;
+  roles: string[];
 }
 
-export async function deactivateUser(_id: number): Promise<void> {
-  // TODO: return client.delete(`/users/${_id}`).then(() => {})
-  return Promise.resolve();
+export interface UpdateUserRequest {
+  displayName: string;
+  email: string | null;
+  isActive: boolean;
+  preferredLocale: string | null;
+  roles: string[];
+}
+
+export async function getUsers(): Promise<UserListItem[]> {
+  const { data } = await client.get<UserListItem[]>("/users");
+  return data;
+}
+
+export async function getRoleOptions(): Promise<RoleOption[]> {
+  const { data } = await client.get<RoleOption[]>("/users/roles");
+  return data;
+}
+
+export async function createUser(
+  request: CreateUserRequest,
+): Promise<UserListItem> {
+  const { data } = await client.post<UserListItem>("/users", request);
+  return data;
+}
+
+export async function updateUser(
+  id: string,
+  request: UpdateUserRequest,
+): Promise<UserListItem> {
+  const { data } = await client.put<UserListItem>(`/users/${id}`, request);
+  return data;
+}
+
+export async function deleteUser(id: string): Promise<void> {
+  await client.delete(`/users/${id}`);
 }

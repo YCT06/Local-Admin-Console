@@ -1,21 +1,41 @@
-import type { Role, PermissionGroup } from '../types/role';
-import { MOCK_ROLES, PERMISSION_GROUPS, MOCK_ROLE_PERMS } from './mock';
+import client from "./client";
+import type {
+  RoleDetailDto,
+  PermissionDto,
+  CreateRoleRequest,
+  UpdateRoleRequest,
+} from "../types/role";
 
-export async function getRoles(): Promise<Role[]> {
-  // TODO: return client.get('/roles').then(r => r.data)
-  return Promise.resolve([...MOCK_ROLES]);
+export async function getRoles(): Promise<RoleDetailDto[]> {
+  const { data } = await client.get<RoleDetailDto[]>("/roles");
+  return data;
 }
 
-export async function getPermissionGroups(): Promise<PermissionGroup[]> {
-  return Promise.resolve(PERMISSION_GROUPS);
+export async function getRoleById(id: string): Promise<RoleDetailDto> {
+  const { data } = await client.get<RoleDetailDto>(`/roles/${id}`);
+  return data;
 }
 
-export async function getRolePerms(roleId: string): Promise<string[]> {
-  // TODO: return client.get(`/roles/${roleId}/perms`).then(r => r.data)
-  return Promise.resolve(MOCK_ROLE_PERMS[roleId] ?? []);
+export async function createRole(
+  request: CreateRoleRequest,
+): Promise<RoleDetailDto> {
+  const { data } = await client.post<RoleDetailDto>("/roles", request);
+  return data;
 }
 
-export async function updateRolePerms(_roleId: string, _perms: string[]): Promise<void> {
-  // TODO: return client.put(`/roles/${_roleId}/perms`, { perms: _perms }).then(() => {})
-  return Promise.resolve();
+export async function updateRole(
+  id: string,
+  request: UpdateRoleRequest,
+): Promise<RoleDetailDto> {
+  const { data } = await client.put<RoleDetailDto>(`/roles/${id}`, request);
+  return data;
+}
+
+export async function deleteRole(id: string): Promise<void> {
+  await client.delete(`/roles/${id}`);
+}
+
+export async function getPermissions(): Promise<PermissionDto[]> {
+  const { data } = await client.get<PermissionDto[]>("/permissions");
+  return data;
 }

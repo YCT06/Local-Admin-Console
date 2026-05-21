@@ -8,7 +8,11 @@
       "PowerShell(Get-ChildItem \"D:\\\\ResearchDepartment\\\\trial\\\\3-dev\\\\src\\\\web-react\\\\CUsersADMINI~1AppDataLocalTempvite-scaffold\" -Force | ForEach-Object { $_.Name })",
       "PowerShell(Copy-Item *)",
       "PowerShell(npm ls *)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(npx eslint *)",
+      "Bash(npm uninstall *)",
+      "Bash(npm install *)",
+      "Bash(npm run *)"
     ]
   }
 }
